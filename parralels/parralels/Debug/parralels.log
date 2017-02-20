@@ -1,0 +1,4 @@
+﻿  parralels.cpp
+c:\users\localadmin\documents\visual studio 2015\projects\parralels\parralels\parralels.cpp(135): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+  parralels.vcxproj -> C:\Users\localadmin\Documents\Visual Studio 2015\Projects\parralels\Debug\parralels.exe
+  parralels.vcxproj -> C:\Users\localadmin\Documents\Visual Studio 2015\Projects\parralels\Debug\parralels.pdb (Full PDB)
