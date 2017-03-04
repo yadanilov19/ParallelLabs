@@ -1,4 +1,6 @@
 ﻿  parralels.cpp
-c:\users\localadmin\documents\visual studio 2015\projects\parralels\parralels\parralels.cpp(135): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-  parralels.vcxproj -> C:\Users\localadmin\Documents\Visual Studio 2015\Projects\parralels\Debug\parralels.exe
-  parralels.vcxproj -> C:\Users\localadmin\Documents\Visual Studio 2015\Projects\parralels\Debug\parralels.pdb (Full PDB)
+c:\users\localadmin\source\repos\parallellabs\parralels\parralels\parralels.cpp(176): fatal error C1001: An internal error has occurred in the compiler.
+  (compiler file 'msc1.cpp', line 1468)
+   To work around this problem, try simplifying or changing the program near the locations listed above.
+  Please choose the Technical Support command on the Visual C++ 
+   Help menu, or open the Technical Support help file for more information
