@@ -102,6 +102,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -143,8 +144,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="..\Debug\test.txt" />
-    <Text Include="..\Debug\test1.txt" />
+    <Text Include="D:\Users\localadmin\Source\Repos\ParallelLabs\parralels\Debug\test.txt" />
+    <Text Include="matr1.txt" />
+    <Text Include="matr2.txt" />
+    <Text Include="matr3.txt" />
+    <Text Include="matr4.txt" />
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>

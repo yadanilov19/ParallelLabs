@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "matrix.h"
 
-
+bool matrix::notationFromOne = true;
 matrix::matrix(const int _n) {
 	n = _n;
 	data = new float*[n];
@@ -13,6 +13,16 @@ matrix::matrix(const int _n) {
 			data[i][j] = 0;
 		}
 	}
+}
+
+bool matrix::getNotationFromOne()
+{
+	return notationFromOne;
+}
+
+void matrix::setNotationFromOne(bool value)
+{
+	notationFromOne = value;
 }
 
 inline bool space(char c) {
@@ -63,6 +73,7 @@ void matrix::toOneDiagonalMatrix()
 #endif // PARALLEL 
 }
 
+
 void matrix::swapRows(int index) {
 	for (int i = index + 1; i < n; i++)
 	{
@@ -74,8 +85,6 @@ void matrix::swapRows(int index) {
 			return;
 		}
 	}
-
-	throw new exception("детерминант == 0");
 }
 
 void matrix::rowSubstractionForTriangle(int index) {
@@ -83,15 +92,15 @@ void matrix::rowSubstractionForTriangle(int index) {
 	{
 		swapRows(index);
 	}
+
 	for (int i = index + 1; i < n; i++)
 	{
 		if (data[i][index] != 0) {
-			float multiplier = data[i][index];
+			float tmp = data[i][index];
 			for (int j = 0; j < n; j++)
 			{
-				data[i][j] -= (data[index][j] * multiplier) / data[index][index];
+				data[i][j] -= (data[index][j] * tmp) / data[index][index];
 			}
-			cout << endl;
 		}
 	}
 }
@@ -101,47 +110,69 @@ void matrix::toTriangleMatrix()
 	for (int i = 0; i < n - 1; i++)
 	{
 		rowSubstractionForTriangle(i);
+		determ *= data[i][i];
 	}
+	determ *= data[n - 1][n - 1];
 }
 
 void matrix::rowSubstractionForTriangleParallel(int index)
 {
 	if (data[index][index] == 0)
 	{
-		swapRows(index);
-	}
-
-#pragma omp parallel for schedule(dynamic)
-	for (int i = index + 1; i < n; i++)
-	{
-		if (data[i][index] != 0) {
-			float multiplier = data[i][index];
-			for (int j = 0; j < n; j++)
-			{
-				data[i][j] -= (data[index][j] * multiplier) / data[index][index];
-			}
-			cout << endl;
+#pragma omp critical
+		{
+			swapRows(index);
 		}
 	}
+
+	int bufN = n, i = index + 1;
+	if (n - index > omp_get_num_threads()*2)
+	{
+#pragma omp parallel for schedule(dynamic) firstprivate(bufN, i)
+		for (i = index + 1; i < bufN; i++)
+		{
+			if (data[i][index] != 0) {
+				float tmp = data[i][index];
+#pragma omp parallel for schedule(dynamic) firstprivate(bufN, i) num_threads(4)
+				for (int j = 0; j < bufN; j++)
+				{
+					data[i][j] -= (data[index][j] * tmp) / data[index][index];
+				}
+			}
+		}
+	}
+	else
+	{
+		rowSubstractionForTriangle(index);
+	}
+
+	return;
 }
 
 void matrix::toTriangleMatrixParallel()
 {
-#pragma omp parallel for schedule(dynamic)
-	for (int i = 0; i < n - 1; i++)
+	double tempDeterm = 1;
+	int _n = n;
+	for (int i = 0; i < _n - 1; i++)
 	{
-		rowSubstractionForTriangle(i);
+		rowSubstractionForTriangleParallel(i);
+		tempDeterm *= data[i][i];
 	}
+
+	determ = tempDeterm * data[n - 1][n - 1];
 }
 
 float matrix::getMultiplyDiagonalElements() {
-	float sum = 1;
+	/*float sum = 1;
 	for (int i = 0; i < n; i++)
 	{
 		sum *= data[i][i];
 	}
 
-	return sum;
+	return sum;*/
+
+
+	return determ;
 }
 
 
@@ -158,7 +189,7 @@ float matrix::getDeterminantParallel()
 	return getMultiplyDiagonalElements();
 }
 
-matrix matrix::parse(char* filename)
+matrix* matrix::parse(char* filename)
 {
 	matrix* m = new matrix(0);
 	string line;
@@ -189,8 +220,8 @@ matrix matrix::parse(char* filename)
 					std::vector<std::string> spt = split(line);
 					int index = (int)atol(spt[0].c_str()),
 						value = (int)atol(spt[1].c_str());
-
-					m->data[numStr][index - 1] = value;
+					int _index = notationFromOne ? index - 1 : index;
+					m->data[numStr][_index] = value;
 				}
 				break;
 			default:
@@ -200,13 +231,13 @@ matrix matrix::parse(char* filename)
 
 	}
 
-	return *m;
+	return m;
 }
 
 void matrix::print() {
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < n; i++)
 	{
-		for (int j = 0; j < 10; j++)
+		for (int j = 0; j < n; j++)
 		{
 			cout << " " << data[i][j] << " ; ";
 		}
@@ -234,8 +265,8 @@ matrix::~matrix()
 {
 	for (int i = 0; i < n; i++)
 	{
-		delete(data[i]);
+		delete[] data[i];
 	}
 
-	delete[] (data);
+	delete[] data;
 }

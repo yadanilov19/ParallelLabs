@@ -16,10 +16,19 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
-    <Text Include="..\Debug\test.txt">
+    <Text Include="matr1.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="..\Debug\test1.txt">
+    <Text Include="matr2.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="matr3.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="matr4.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="D:\Users\localadmin\Source\Repos\ParallelLabs\parralels\Debug\test.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

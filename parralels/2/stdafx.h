@@ -15,5 +15,6 @@
 #include <vector>
 #include <cctype>
 #include <algorithm>
+#include <omp.h>
 
 // TODO: reference additional headers your program requires here
