@@ -28,7 +28,7 @@ void start(char* path) {
 	time2 = fixTime(m, true);
 	m->~matrix();
 
-	cout << "Выигрыш по скорости:  " << time1 - time2 << endl << endl;
+	cout << "Выигрыш по времени:  " << time1 - time2 << endl << endl;
 }
 
 int main()
@@ -41,11 +41,11 @@ int main()
 	char* m3 = "matr3.txt";
 	char* m4 = "matr4.txt";
 
-	cout << "m1" << endl;
+	/*cout << "m1" << endl;
 	start(m1);
 
 	cout << "m2" << endl;
-	start(m2);
+	start(m2);*/
 
 	//cout << "m3" << endl;
 	//start(m3);
@@ -56,11 +56,11 @@ int main()
 	isM4 = false;
 	while (getchar() != 'q')
 	{
-		cout << "m1" << endl;
+		/*cout << "m1" << endl;
 		start(m1);
 
 		cout << "m2" << endl;
-		start(m2);
+		start(m2);*/
 
 		/*cout << "m3" << endl;
 		start(m3);*/

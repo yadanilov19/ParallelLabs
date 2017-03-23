@@ -95,8 +95,8 @@ void matrix::rowSubstractionForTriangle(int index) {
 
 	for (int i = index + 1; i < n; i++)
 	{
-		if (data[i][index] != 0) {
-			float tmp = data[i][index];
+		//if (data[i][index] != 0) {
+			{float tmp = data[i][index];
 			for (int j = 0; j < n; j++)
 			{
 				data[i][j] -= (data[index][j] * tmp) / data[index][index];
@@ -126,26 +126,19 @@ void matrix::rowSubstractionForTriangleParallel(int index)
 	}
 
 	int bufN = n, i = index + 1;
-	if (n - index > omp_get_num_threads()*2)
-	{
-#pragma omp parallel for schedule(dynamic) firstprivate(bufN, i)
+#pragma omp parallel for schedule(dynamic) firstprivate(bufN, i) num_threads(3)
 		for (i = index + 1; i < bufN; i++)
 		{
-			if (data[i][index] != 0) {
-				float tmp = data[i][index];
-#pragma omp parallel for schedule(dynamic) firstprivate(bufN, i) num_threads(4)
+			//if (data[i][index] != 0) {
+			{float tmp = data[i][index];
+//#pragma omp parallel for schedule(dynamic) firstprivate(bufN, i) num_threads(4)
 				for (int j = 0; j < bufN; j++)
 				{
 					data[i][j] -= (data[index][j] * tmp) / data[index][index];
 				}
 			}
 		}
-	}
-	else
-	{
-		rowSubstractionForTriangle(index);
-	}
-
+	
 	return;
 }
 
